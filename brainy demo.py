@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 MODELS = [
@@ -168,4 +168,5 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("BRAINY")
     app.run(port=5000)
+
 
