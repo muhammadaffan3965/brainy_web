@@ -20,10 +20,10 @@ client = OpenAI(
 MODELS = [
     "anthropic/claude-opus-4.5",
     "openai/gpt-5.2-pro",
-    "google/gemini-2.5-pro",
-    "meta-llama/llama-4-405b",
-    "deepseek/deepseek-v3.2",
-    "mistralai/mistral-large",
+    #"google/gemini-2.5-pro",
+    #"meta-llama/llama-4-405b",
+    #"deepseek/deepseek-v3.2",
+    #"mistralai/mistral-large",
     "x-ai/grok-4.1-fast"
 ]
 
@@ -198,4 +198,5 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("Launching B.R.A.I.N.Y — Smart Consensus Edition...")
     app.run(port=5000)
+
 
