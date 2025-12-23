@@ -8,9 +8,10 @@ import concurrent.futures
 
 app = Flask(__name__)
 
+import os
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key=os.getenv("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")  # From env var
 )
 
 MODELS = [
@@ -169,3 +170,4 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("BRAINY")
     app.run(port=5000)
+
