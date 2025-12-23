@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 MODELS = [
@@ -198,3 +198,4 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("Launching B.R.A.I.N.Y — Smart Consensus Edition...")
     app.run(port=5000)
+
