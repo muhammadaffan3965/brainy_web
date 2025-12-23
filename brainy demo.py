@@ -1,4 +1,5 @@
 
+
 from flask import Flask, render_template_string, request, jsonify
 from openai import OpenAI
 from pyngrok import ngrok
@@ -9,7 +10,7 @@ app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 MODELS = [
@@ -168,4 +169,3 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("BRAINY")
     app.run(port=5000)
-
