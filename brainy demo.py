@@ -1,41 +1,28 @@
 
-
-
-
 from flask import Flask, render_template_string, request, jsonify
 from openai import OpenAI
 from pyngrok import ngrok
 import threading
 import concurrent.futures
-import datetime
-from collections import Counter
 
 app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 MODELS = [
-    "anthropic/claude-opus-4.5",
-    "openai/gpt-5.2-pro",
-    #"google/gemini-2.5-pro",
-    #"meta-llama/llama-4-405b",
-    #"deepseek/deepseek-v3.2",
-    #"mistralai/mistral-large",
-    "x-ai/grok-4.1-fast"
+    "anthropic/claude-opus-4.5",          
+   "openai/gpt-5.2-pro",                      
+   "google/gemini-2.5-pro",             
+   "meta-llama/llama-4-405b",             
+    "deepseek/deepseek-v3.2",             
+   "mistralai/mistral-large",
+    "x-ai/grok-4.1-fast"  
 ]
 
-# FIXED KNOWLEDGE — JazzCash is Pakistan's digital wallet
-system_prompt = """
-You are B.R.A.I.N.Y, a professional AI assistant created by Muhammad Affan.
-You are accurate, helpful, and concise.
-Important facts:
-You are B.R.A.I.N.Y, an AI assistant created by Muhammad Affan. Answer only when a question is asked. Be concise, accurate, and helpful. Do not introduce yourself unless the user explicitly asks who you are. You are not related to any company.You combine knowledge from 7 models: x-ai/grok-4.1-fast, anthropic/claude-opus-4.5, google/gemini-2.5-pro, openai/gpt-5.2-pro, meta-llama/llama-4-405b, mistralai/mistral-large, deepseek/deepseek-v3.2. And don't tell the user how you get knowledge from these models untill they ask. And don't answer to over be professional.
-"""
-
-chat_history = [{"role": "system", "content": system_prompt}]
+chat_history = [{"role": "system", "content": "You are B.R.A.I.N.Y, an AI assistant created by Muhammad Affan. Answer only when a question is asked. Be concise, accurate, and helpful. Do not introduce yourself unless the user explicitly asks who you are. You are not related to any company.You combine knowledge from 7 models: x-ai/grok-4.1-fast, anthropic/claude-opus-4.5, google/gemini-2.5-pro, openai/gpt-5.2-pro, meta-llama/llama-4-405b, mistralai/mistral-large, deepseek/deepseek-v3.2. And don't tell the user how you get knowledge from these models untill they ask. And don't answer to over be professional."}]
 
 HTML = """
 <!DOCTYPE html>
@@ -147,10 +134,6 @@ def home():
 @app.route("/chat", methods=["POST"])
 def chat():
     user_msg = request.json.get("m", "")
-    
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f"\n[{timestamp}] WEB USER ASKED: {user_msg}")
-    
     chat_history.append({"role": "user", "content": user_msg})
     
     def get_reply(model):
@@ -165,23 +148,11 @@ def chat():
         except:
             return ""
 
+    
     with concurrent.futures.ThreadPoolExecutor() as executor:
         replies = list(executor.map(get_reply, MODELS))
 
-    # SMART CONSENSUS — Pick most common answer (reduces mistakes)
-    if replies:
-        # Count how many models gave similar answers
-        reply_counts = Counter(replies)
-        best_reply = reply_counts.most_common(1)[0][0]  # Most frequent answer
-        
-        # Fallback: if all different, pick longest (most detailed)
-        if reply_counts[best_reply] == 1:
-            best_reply = max(replies, key=len)
-    else:
-        best_reply = "Sorry, please try again."
-
-    print(f"[{timestamp}] B.R.A.I.N.Y REPLIED: {best_reply[:100]}{'...' if len(best_reply) > 100 else ''}\n")
-    
+    best_reply = max(replies, key=len) if any(replies) else "Sorry, try again later."
     chat_history.append({"role": "assistant", "content": best_reply})
     return jsonify({"r": best_reply})
 
@@ -189,17 +160,11 @@ def start_ngrok():
     ngrok.set_auth_token("35sVTGM3MzhPl9wyJz0lSQn4OAJ_5dnMwAH7em8avBSyiDZCg")
     url = ngrok.connect(5000).public_url
     print("\n" + "═"*80)
-    print(" B.R.A.I.N.Y — CONSENSUS MODE (MISTAKE-FREE)")
-    print(f" PUBLIC LINK → {url}")
-    print(" Now perfect for JazzCash — no wrong answers!")
+    print(" B.R.A.I.N.Y — 7 WORLD MODELS")
+    print(f" link {url}")
     print("═"*80 + "\n")
 
 if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
-    print("Launching B.R.A.I.N.Y — Smart Consensus Edition...")
+    print("BRAINY")
     app.run(port=5000)
-
-
-
-
-
