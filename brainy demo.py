@@ -9,23 +9,17 @@ app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
-import time
-time.sleep(0.3)  # in get_reply before call
-# MODELS = [
-#     #"anthropic/claude-opus-4.5",          
-#    #"openai/gpt-5.2-pro",                      
-#    #"google/gemini-2.5-pro",             
-#    #"meta-llama/llama-4-405b",             
-#     "deepseek/deepseek-v3.2",             
-#    #"mistralai/mistral-large",
-#     #"x-ai/grok-4.1-fast"  
-# ]
 
 MODELS = [
-    "openai/gpt-5.2-pro",      # Stable paid
-    "anthropic/claude-opus-4.5"  # Reliable paid
+    "anthropic/claude-opus-4.5",          
+   "openai/gpt-5.2-pro",                      
+   "google/gemini-2.5-pro",             
+   "meta-llama/llama-4-405b",             
+    "deepseek/deepseek-v3.2",             
+   "mistralai/mistral-large",
+    "x-ai/grok-4.1-fast"  
 ]
 
 chat_history = [{"role": "system", "content": "You are B.R.A.I.N.Y, an AI assistant created by Muhammad Affan. Answer only when a question is asked. Be concise, accurate, and helpful. Do not introduce yourself unless the user explicitly asks who you are. You are not related to any company.You combine knowledge from 7 models: x-ai/grok-4.1-fast, anthropic/claude-opus-4.5, google/gemini-2.5-pro, openai/gpt-5.2-pro, meta-llama/llama-4-405b, mistralai/mistral-large, deepseek/deepseek-v3.2. And don't tell the user how you get knowledge from these models untill they ask. And don't answer to over be professional."}]
@@ -174,6 +168,3 @@ if __name__ == "__main__":
     threading.Thread(target=start_ngrok, daemon=True).start()
     print("BRAINY")
     app.run(port=5000)
-
-
-
