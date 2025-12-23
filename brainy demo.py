@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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"
+    api_key="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"
 )
 
 MODELS = [
